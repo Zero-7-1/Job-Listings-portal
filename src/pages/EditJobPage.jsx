@@ -45,7 +45,7 @@ const EditJobPage = ({ updateJobSubmit }) => {
   };
 
   return (
-    <section className='bg-indigo-50'>
+    <section className='bg-red-50'>
       <div className='container m-auto max-w-2xl py-24'>
         <div className='bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0'>
           <form onSubmit={submitForm}>
@@ -115,26 +115,15 @@ const EditJobPage = ({ updateJobSubmit }) => {
               >
                 Salary
               </label>
-              <select
-                id='salary'
-                name='salary'
-                className='border rounded w-full py-2 px-3'
-                required
-                value={salary}
-                onChange={(e) => setSalary(e.target.value)}
-              >
-                <option value='Under $50K'>Under $50K</option>
-                <option value='$50K - 60K'>$50K - $60K</option>
-                <option value='$60K - 70K'>$60K - $70K</option>
-                <option value='$70K - 80K'>$70K - $80K</option>
-                <option value='$80K - 90K'>$80K - $90K</option>
-                <option value='$90K - 100K'>$90K - $100K</option>
-                <option value='$100K - 125K'>$100K - $125K</option>
-                <option value='$125K - 150K'>$125K - $150K</option>
-                <option value='$150K - 175K'>$150K - $175K</option>
-                <option value='$175K - 200K'>$175K - $200K</option>
-                <option value='Over $200K'>Over $200K</option>
-              </select>
+              <textarea
+                   id='salary'
+                   name='salary'
+                   className='border rounded w-full py-2 px-3'
+                   rows='2'
+                   placeholder='Enter the salary range (e.g., 4-6L/year)'
+                   value={salary}
+                   onChange={(e) => setSalary(e.target.value)}
+              ></textarea>
             </div>
 
             <div className='mb-4'>
@@ -229,7 +218,7 @@ const EditJobPage = ({ updateJobSubmit }) => {
 
             <div>
               <button
-                className='bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline'
+                className='bg-red-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline'
                 type='submit'
               >
                 Update Job

@@ -7,7 +7,7 @@ const AddJobPage = ({ addJobSubmit }) => {
   const [type, setType] = useState('Full-Time');
   const [location, setLocation] = useState('');
   const [description, setDescription] = useState('');
-  const [salary, setSalary] = useState('Under $50K');
+  const [salary, setSalary] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [companyDescription, setCompanyDescription] = useState('');
   const [contactEmail, setContactEmail] = useState('');
@@ -62,9 +62,9 @@ const AddJobPage = ({ addJobSubmit }) => {
                 onChange={(e) => setType(e.target.value)}
               >
                 <option value='Full-Time'>Full-Time</option>
-                <option value='Part-Time'>Part-Time</option>
-                <option value='Remote'>Remote</option>
-                <option value='Internship'>Internship</option>
+                <option value='Part-Time'>Part-Time or Freelancing</option>
+                <option value='Remote'>Remote or Work From Home</option>
+                <option value='Internship'>Internship for Students </option>
               </select>
             </div>
 
@@ -77,7 +77,7 @@ const AddJobPage = ({ addJobSubmit }) => {
                 id='title'
                 name='title'
                 className='border rounded w-full py-2 px-3 mb-2'
-                placeholder='eg. Beautiful Apartment In Miami'
+                placeholder='eg. Back-end Node.js Developer (Fresher)'
                 required
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
@@ -95,7 +95,7 @@ const AddJobPage = ({ addJobSubmit }) => {
                 name='description'
                 className='border rounded w-full py-2 px-3'
                 rows='4'
-                placeholder='Add any job duties, expectations, requirements, etc'
+                placeholder='Add job duties, expectations, requirements, etc'
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               ></textarea>
@@ -108,26 +108,15 @@ const AddJobPage = ({ addJobSubmit }) => {
               >
                 Salary
               </label>
-              <select
-                id='salary'
-                name='salary'
-                className='border rounded w-full py-2 px-3'
-                required
-                value={salary}
-                onChange={(e) => setSalary(e.target.value)}
-              >
-                <option value='Under $50K'>Under $50K</option>
-                <option value='$50K - 60K'>$50K - $60K</option>
-                <option value='$60K - 70K'>$60K - $70K</option>
-                <option value='$70K - 80K'>$70K - $80K</option>
-                <option value='$80K - 90K'>$80K - $90K</option>
-                <option value='$90K - 100K'>$90K - $100K</option>
-                <option value='$100K - 125K'>$100K - $125K</option>
-                <option value='$125K - 150K'>$125K - $150K</option>
-                <option value='$150K - 175K'>$150K - $175K</option>
-                <option value='$175K - 200K'>$175K - $200K</option>
-                <option value='Over $200K'>Over $200K</option>
-              </select>
+              <textarea
+                   id='salary'
+                   name='salary'
+                   className='border rounded w-full py-2 px-3'
+                   rows='2'
+                   placeholder='Enter the salary range (e.g., 4-6L/year)'
+                   value={salary}
+                   onChange={(e) => setSalary(e.target.value)}
+              ></textarea>
             </div>
 
             <div className='mb-4'>
@@ -178,7 +167,7 @@ const AddJobPage = ({ addJobSubmit }) => {
                 name='company_description'
                 className='border rounded w-full py-2 px-3'
                 rows='4'
-                placeholder='What does your company do?'
+                placeholder='What does your company do? Describe your moto.'
                 value={companyDescription}
                 onChange={(e) => setCompanyDescription(e.target.value)}
               ></textarea>
@@ -214,7 +203,7 @@ const AddJobPage = ({ addJobSubmit }) => {
                 id='contact_phone'
                 name='contact_phone'
                 className='border rounded w-full py-2 px-3'
-                placeholder='Optional phone for applicants'
+                placeholder='Give HR or Interviewer number for applicants'
                 value={contactPhone}
                 onChange={(e) => setContactPhone(e.target.value)}
               />
@@ -222,7 +211,7 @@ const AddJobPage = ({ addJobSubmit }) => {
 
             <div>
               <button
-                className='bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline'
+                className='bg-red-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline'
                 type='submit'
               >
                 Add Job
