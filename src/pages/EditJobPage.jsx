@@ -4,26 +4,30 @@ import { toast } from 'react-toastify';
 
 const EditJobPage = ({ updateJobSubmit }) => {
   const job = useLoaderData();
-  const [title, setTitle] = useState(job.title);
-  const [type, setType] = useState(job.type);
-  const [location, setLocation] = useState(job.location);
-  const [description, setDescription] = useState(job.description);
-  const [salary, setSalary] = useState(job.salary);
-  const [companyName, setCompanyName] = useState(job.company.name);
-  const [companyDescription, setCompanyDescription] = useState(
-    job.company.description
-  );
-  const [contactEmail, setContactEmail] = useState(job.company.contactEmail);
-  const [contactPhone, setContactPhone] = useState(job.company.contactPhone);
-
   const navigate = useNavigate();
   const { id } = useParams();
+
+  // Loading state
+  if (!job) {
+    return <div>Loading job data...</div>;
+  }
+
+  // Use optional chaining and default values to prevent errors
+  const [title, setTitle] = useState(job?.title || '');
+  const [type, setType] = useState(job?.type || '');
+  const [location, setLocation] = useState(job?.location || '');
+  const [description, setDescription] = useState(job?.description || '');
+  const [salary, setSalary] = useState(job?.salary || '');
+  const [companyName, setCompanyName] = useState(job?.company?.name || '');
+  const [companyDescription, setCompanyDescription] = useState(job?.company?.description || '');
+  const [contactEmail, setContactEmail] = useState(job?.company?.contactEmail || '');
+  const [contactPhone, setContactPhone] = useState(job?.company?.contactPhone || '');
 
   const submitForm = (e) => {
     e.preventDefault();
 
     const updatedJob = {
-      id,
+      id: job.id, // Use the ID from the fetched job
       title,
       type,
       location,
@@ -37,12 +41,21 @@ const EditJobPage = ({ updateJobSubmit }) => {
       },
     };
 
-    updateJobSubmit(updatedJob);
-
-    toast.success('Job Updated Successfully');
-
-    return navigate(`/jobs/${id}`);
+    updateJobSubmit(updatedJob)
+      .then((success) => {
+        if (success) {
+          toast.success('Job Updated Successfully');
+          navigate(`/jobs/${id}`);
+        } else {
+          toast.error('Failed to update job.');
+        }
+      })
+      .catch((error) => {
+        console.error('Error updating job:', error);
+        toast.error('An error occurred. Please try again later.');
+      });
   };
+
 
   return (
     <section className='bg-red-50'>

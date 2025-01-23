@@ -15,34 +15,72 @@ const App = () => {
 
   // Add New Job
   const addJob = async (newJob) => {
-    const res = await fetch(firebaseURL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newJob),
-    });
-    return res.json(); // return the response data if needed
+    try {
+      const res = await fetch(firebaseURL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newJob),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(`Failed to add job: ${res.status} - ${res.statusText} - ${JSON.stringify(errorData)}`);
+      }
+
+      const data = await res.json(); // Get the response which contains the generated key
+      const generatedKey = data.name; // Access the generated key
+
+      return generatedKey; // Return the key
+    } catch (error) {
+      console.error("Error adding job:", error);
+      return null; // or throw the error
+    }
   };
 
   // Delete Job
   const deleteJob = async (id) => {
-    const res = await fetch(`https://backend-job-hunt-hirer-portal-default-rtdb.firebaseio.com/jobs/${id}.json`, {
-      method: 'DELETE',
-    });
-    return res.json(); // return the response data if needed
+    try {
+      const res = await fetch(`https://backend-job-hunt-hirer-portal-default-rtdb.firebaseio.com/jobs/${id}.json`, {
+        method: 'DELETE',
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(`Failed to delete job: ${res.status} - ${res.statusText} - ${JSON.stringify(errorData)}`);
+      }
+
+      console.log("Job deleted successfully");
+      return true; // or handle success message
+    } catch (error) {
+      console.error("Error deleting job:", error);
+      return false; // or handle error message
+    }
   };
 
   // Update Job
   const updateJob = async (job) => {
-    const res = await fetch(`https://backend-job-hunt-hirer-portal-default-rtdb.firebaseio.com/jobs/${job.id}.json`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(job),
-    });
-    return res.json(); // return the response data if needed
+    try {
+      const res = await fetch(`https://backend-job-hunt-hirer-portal-default-rtdb.firebaseio.com/jobs/${job.id}.json`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(job),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(`Failed to update job: ${res.status} - ${res.statusText} - ${JSON.stringify(errorData)}`);
+      }
+
+      console.log("Job updated successfully");
+      return true; // or handle success message
+    } catch (error) {
+      console.error("Error updating job:", error);
+      return false; // or handle error message
+    }
   };
 
   const router = createBrowserRouter(

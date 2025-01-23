@@ -3,7 +3,7 @@ import JobListing from './JobListing';
 import Spinner from './Spinner';
 
 const JobListings = ({ isHome = false }) => {
-  const [jobs, setJobs] = useState({});
+  const [jobs, setJobs] = useState([]); // Initialize as an empty array
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -14,7 +14,8 @@ const JobListings = ({ isHome = false }) => {
       try {
         const res = await fetch(apiURL);
         const data = await res.json();
-        setJobs(data); // Save the entire object (key-value pairs)
+        // Handle potential null data from Firebase
+        setJobs(data || []); // Set to empty array if data is null
       } catch (error) {
         console.log("Error while fetching", error);
       } finally {
@@ -34,11 +35,16 @@ const JobListings = ({ isHome = false }) => {
         {loading ? (
           <Spinner loading={loading} />
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {Object.keys(jobs).map((key) => (
-              <JobListing key={key} jobs={{ id: key, ...jobs[key] }} />
-            ))}
-          </div>
+          // Check if jobs is an array and has elements before mapping
+          jobs.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {jobs.map((job) => (
+                <JobListing key={job.id} job={job} /> // Pass the entire job object
+              ))}
+            </div>
+          ) : (
+            <p className="text-center text-gray-500">No jobs found.</p>
+          )
         )}
       </div>
     </section>
