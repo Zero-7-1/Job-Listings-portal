@@ -3,7 +3,7 @@ import React from 'react'
 const Hero = (
     {
         title = 'Find a Dev Job',
-        description = 'or call developers for an interview straightforwardly..'
+        description = 'or call developers for an interview'
     }
 ) => {
   return (
