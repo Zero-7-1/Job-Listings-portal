@@ -63,7 +63,7 @@ const JobPage = ({ deleteJob }) => {
               </div>
             </main>
 
-            {/* <!-- Sidebar --> */}
+            {/* Sidebar */}
             <aside>
               <div className='bg-white p-6 rounded-lg shadow-md'>
                 <h3 className='text-xl font-bold mb-6'>Company Info</h3>
@@ -112,7 +112,10 @@ const JobPage = ({ deleteJob }) => {
 };
 
 const jobLoader = async ({ params }) => {
-  const res = await fetch(`/api/jobs/${params.id}`);
+  const res = await fetch(`https://backend-job-hunt-hirer-portal-default-rtdb.firebaseio.com/jobs/${params.id}.json`);
+  if (!res.ok) {
+    throw new Error('Failed to fetch job details');
+  }
   const data = await res.json();
   return data;
 };
