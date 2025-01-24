@@ -126,7 +126,7 @@ export const jobLoader = async ({ params }) => {
             throw new Error(`Failed to fetch job: ${res.status} - ${res.statusText} - ${JSON.stringify(errorData)}`);
         }
         const job = await res.json();
-        return job;
+        return { ...job, id }; // Include the job ID in the returned job data
     } catch (error) {
         console.error("Error loading job:", error);
         throw error;

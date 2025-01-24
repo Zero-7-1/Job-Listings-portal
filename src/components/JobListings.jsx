@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import JobListing from './JobListing';
 import Spinner from './Spinner';
 
@@ -9,42 +9,50 @@ const JobListings = ({ isHome = false }) => {
   useEffect(() => {
     const fetchJobs = async () => {
       const apiURL = isHome
-        ? 'https://backend-job-hunt-hirer-portal-default-rtdb.firebaseio.com/jobs.json?_limit=3'
-        : 'https://backend-job-hunt-hirer-portal-default-rtdb.firebaseio.com/jobs.json';
+        ? 'https://backend-job-hunt-hirer-portal-default-rtdb.firebaseio.com/jobs.json?_limit=3' // Limit to 3 for homepage
+        : 'https://backend-job-hunt-hirer-portal-default-rtdb.firebaseio.com/jobs.json'; // Fetch all jobs for Browse Jobs page
+
       try {
         const res = await fetch(apiURL);
         const data = await res.json();
-        // Handle potential null data from Firebase
-        setJobs(data || []); // Set to empty array if data is null
+
+        // Convert the Firebase object into an array, and format it properly
+        const jobsArray = Object.entries(data || {}).map(([id, job]) => ({
+          id,
+          ...job,
+          contactEmail: job.company?.contactEmail || 'No email available',
+          contactPhone: job.company?.contactPhone || 'No phone available',
+          companyName: job.company?.name || 'No company name available',
+          companyDescription: job.company?.description || 'No description available',
+        }));
+
+        setJobs(jobsArray);
       } catch (error) {
-        console.log("Error while fetching", error);
+        console.error('Error fetching data', error);
+        setJobs([]); // Fallback to empty array if fetching fails
       } finally {
         setLoading(false);
       }
     };
+
     fetchJobs();
-  }, []);
+  }, [isHome]);
 
   return (
     <section className="bg-blue-50 px-4 py-10">
       <div className="container-xl lg:container m-auto">
-        <h2 className="text-3xl font-bold text-green-500 mb-6 text-center">
-          Browse Jobs
+        <h2 className="text-3xl font-bold text-indigo-500 mb-6 text-center">
+          {isHome ? 'Recent Jobs' : 'Browse Jobs'}
         </h2>
 
         {loading ? (
           <Spinner loading={loading} />
         ) : (
-          // Check if jobs is an array and has elements before mapping
-          jobs.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {jobs.map((job) => (
-                <JobListing key={job.id} job={job} /> // Pass the entire job object
-              ))}
-            </div>
-          ) : (
-            <p className="text-center text-gray-500">No jobs found.</p>
-          )
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {jobs.map((job) => (
+              <JobListing key={job.id} job={job} />
+            ))}
+          </div>
         )}
       </div>
     </section>
@@ -52,3 +60,5 @@ const JobListings = ({ isHome = false }) => {
 };
 
 export default JobListings;
+
+

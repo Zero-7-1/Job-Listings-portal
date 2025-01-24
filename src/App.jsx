@@ -59,29 +59,34 @@ const App = () => {
     }
   };
 
-  // Update Job
-  const updateJob = async (job) => {
-    try {
-      const res = await fetch(`https://backend-job-hunt-hirer-portal-default-rtdb.firebaseio.com/jobs/${job.id}.json`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(job),
-      });
+// Update Job
+const updateJob = async (job) => {
+  try {
+    const res = await fetch(`https://backend-job-hunt-hirer-portal-default-rtdb.firebaseio.com/jobs/${job.id}.json`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(job),
+    });
 
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(`Failed to update job: ${res.status} - ${res.statusText} - ${JSON.stringify(errorData)}`);
-      }
-
-      console.log("Job updated successfully");
-      return true; // or handle success message
-    } catch (error) {
-      console.error("Error updating job:", error);
-      return false; // or handle error message
+    if (!res.ok) {
+      const errorData = await res.json(); // Fetch error data (if any)
+      console.error("Error response data:", errorData); // Log error for debugging
+      throw new Error(`Failed to update job: ${res.status} - ${res.statusText} - ${JSON.stringify(errorData)}`);
     }
-  };
+
+    // Optionally, parse the response if needed (for example, to confirm the job update)
+    const data = await res.json();
+    console.log("Job updated successfully:", data); // Log or use the returned data if necessary
+
+    return true; // Successfully updated job
+  } catch (error) {
+    console.error("Error updating job:", error); // Error handling
+    return false; // Handle error and return false
+  }
+};
+
 
   const router = createBrowserRouter(
     createRoutesFromElements(
